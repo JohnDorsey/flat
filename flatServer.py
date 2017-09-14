@@ -35,20 +35,24 @@ def clientThread(member): #this runs and handlers a player connection until disc
   member[0].send(b'#you_have_been_introduced')
   print("waiting 5 seconds for member[0] to interpret introduction...")
   time.sleep(5.0)
-  for clientTick in range(0,2147483647):
+  clientTick = 0L
+  while(True):
+    clientTick += 1
     try:
       result = interact(member)
       if result != 0:
-        print("clientTick="+str(clientTick)+": quitting thread for " + str(member[1]) + " with code " + str(result))
+        print(str(member[1])+": tick="+str(clientTick)+": quitting thread with code " + str(result))
         return
     except ConnectionResetError:
-      print("clientTick="+str(clientTick)+": quitting thread for " + str(member[1]) + " with connection reset")
+      print(str(member[1]) +": tick="+str(clientTick)+": connection reset, quitting thread")
       return
 
   
 def serverThread(interval):
   print("server thread started with tick interval of " + str(interval))
-  for serverTick in range(0,2147483647):
+  serverTick = 0L
+  while(True):
+    serverTick += 1
     updateStream = dataHandler.getUpdate()
     #world.add((1,4),1)
     #worldDataHandler[1][4] = 
@@ -72,7 +76,7 @@ def interact(member): #exchange data with specified player
       pass
     elif block.startswith(b'XX'): ##XX from client to server means disconnect me
       print("XX - the client will be disconnected")
-      c.send(b'#xx recieved;')
+      c.send(b'#xx_recieved_all_communications_end_instantly;')
       c.close()
       return 1
     elif block.startswith(b'PR'): #PR = player refresh
