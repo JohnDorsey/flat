@@ -94,6 +94,7 @@ def interact(member): #exchange data with specified player
   c.send(b'BU'+worldDataHandler.getUpdate()+b';') #send a board update to member
   return 0
 
+
   
   
   
