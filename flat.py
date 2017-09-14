@@ -123,6 +123,7 @@ dataHandler = DataHandler({},name="clientDH")
 
 connect()
 
+
 while(True):
   world.draw(screen)
   Player.draw(me,str(me["pos"]),screen)
