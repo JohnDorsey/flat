@@ -8,12 +8,12 @@ class DataHandler:
     self.source, self.name = source, name
     self.changes = {}
     
-  def __getitem__(self,key,value):
+  def __getitem__(self,key):
     try:
       return self.changes[key]
     except KeyError:
       try:
-        return self.sources[key]
+        return self.source[key]
       except KeyError:
         print("self.name: " + str(key) + " does not exist")
     
