@@ -35,7 +35,7 @@ def clientThread(member): #this runs and handlers a player connection until disc
   member[0].send(b'#you_have_been_introduced')
   print("waiting 5 seconds for member[0] to interpret introduction...")
   time.sleep(5.0)
-  clientTick = 0L
+  clientTick = 0
   while(True):
     clientTick += 1
     try:
@@ -50,7 +50,7 @@ def clientThread(member): #this runs and handlers a player connection until disc
   
 def serverThread(interval):
   print("server thread started with tick interval of " + str(interval))
-  serverTick = 0L
+  serverTick = 0
   while(True):
     serverTick += 1
     updateStream = dataHandler.getUpdate()
