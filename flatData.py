@@ -20,10 +20,7 @@ class DataHandler:
   def __setitem__(self,key,value):
     if not (self.source.__contains__(key)):
       self.source[key] = value
-      self.changes[key] = value
-      return
-    if not (self.changes.__contains__(key) and self.changes[key]==value):
-      self.changes[key] = value
+    self.changes[key] = value
     if self.source[key] == self.changes[key]:
       self.changes.delitem(key)
       
@@ -33,7 +30,10 @@ class DataHandler:
       self.changes.delitem[key]
 
   def getUpdate(self):
-    result = self.changes
+    result = {}
+    #result = self.changes
+    for item in self.changes:
+      result[item] = encodeUpdate(self.changes[item])
     self.changes = {}
     return result
     
@@ -41,17 +41,18 @@ class DataHandler:
     for key in update:
       if self.changes.__contains__(key):
         self.changes.delitem(key)
-      self.source[key] = update[key]
+      #self.source[key] = update[key]
+      decodeUpdate(self.source[key],update[key])
       #self.changes[key] = update[key]
-      
-    
+
   def getRefresh(self):
     result = {}
     for key in self.source:
       try:
-        result[key] = self.changes[key]
+        result[key] = encodeRefresh(self.changes[key])
       except KeyError:
-        result[key] = self.source[key]
+        result[key] = encodeRefresh(self.source[key])
+    return result
     
   def putRefresh(self,refresh):
     self.source = refresh
@@ -83,3 +84,11 @@ def decodeRefresh(object,input):
     object.putRefresh(input)
   except AttributeError:
     object = input
+    
+    
+    
+def toStream(object):
+  return str(object).encode()
+  
+def toData(object):
+  return eval(object.decode())

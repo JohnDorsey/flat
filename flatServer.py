@@ -30,11 +30,15 @@ updateStream = b'' #store the current tick's updates here while distributing the
 
 def clientThread(member): #this runs and handlers a player connection until disconnected
   print("new thread created for " + str(member[1]))
-  member[0].send(b'#you_have_joined;')
-  introduce(member)
-  member[0].send(b'#you_have_been_introduced')
-  print("waiting 5 seconds for member[0] to interpret introduction...")
-  time.sleep(5.0)
+  try:
+    member[0].send(b'#you_have_joined;')
+    introduce(member)
+    member[0].send(b'#you_have_been_introduced')
+    print("waiting 5 seconds for member[0] to interpret introduction...")
+    time.sleep(5.0)
+  except ConnectionResetError:
+    print(str(member[1]) + ": connection reset during introduction, quitting thread")
+    return
   clientTick = 0
   while(True):
     clientTick += 1
@@ -53,7 +57,7 @@ def serverThread(interval):
   serverTick = 0
   while(True):
     serverTick += 1
-    updateStream = dataHandler.getUpdate()
+    updateStream = toStream(dataHandler.getUpdate())
     #world.add((1,4),1)
     #worldDataHandler[1][4] = 
     time.sleep(interval)
@@ -81,17 +85,17 @@ def interact(member): #exchange data with specified player
       return 1
     elif block.startswith(b'PR'): #PR = player refresh
       print("PR - will put " + block.decode())
-      ph.putUpdate(block[2:]) #cut out the b'PR'. combine these selectors soon
+      ph.putUpdate(toData(block[2:])) #cut out the b'PR'. combine these selectors soon
       world.add((ph["pos"][0],ph["pos"][1]),1)
     elif block.startswith(b'PU'):
       print("PU - will put " + block.decode())
-      ph.putUpdate(block[2:]) #cut out the b'PU'. combine these selectors soon
+      ph.putUpdate(toData(block[2:])) #cut out the b'PU'. combine these selectors soon
       world.add((ph["pos"][0],ph["pos"][1]),1)
       ######NEEDS TO REGISTER CHANGE WITH THE WORLD DATA HANDLER
   if len(updateStream) > 0:
     c.send(b'DU'+updateStream+b';') #send this tick's data update to member
   #c.send(b'BR'+worldBoardHandler.getRefresh()+b';') #send a board refresh to member
-  c.send(b'BU'+worldDataHandler.getUpdate()+b';') #send a board update to member
+  c.send(b'BU'+toStream(worldDataHandler.getUpdate())+b';') #send a board update to member
   return 0
 
 
@@ -102,8 +106,8 @@ def introduce(member):
   print("introducing member to the game")
   member[0].send(b'#intro;')
   member[0].send(b'BR'+worldBoardHandler.getRefresh()+b';') #send a board refresh to member
-  member[0].send(b'PR'+member[2].getRefresh()+b';') #send a player refresh to member
-  member[0].send(b'DR'+dataHandler.getRefresh()+b';') #send a data refresh to member
+  member[0].send(b'PR'+toStream(member[2].getRefresh())+b';') #send a player refresh to member
+  member[0].send(b'DR'+toStream(dataHandler.getRefresh())+b';') #send a data refresh to member
   
 
 

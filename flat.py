@@ -58,7 +58,7 @@ def frame(t=0.125):
       stop()
     if ev.type == pygame.KEYDOWN:
       Player.move(me,keyToDirection(ev.key))
-      s.send(b'PR'+me.getUpdate()+b';')
+      s.send(b'PR'+toStream(me.getUpdate())+b';')
   try:
     streamIn = s.recv(4320) #recieve data from server
   except socket.error:
@@ -89,16 +89,16 @@ def terpBlock(block):
       stop()
   elif block.startswith(b'BU'):
     print("BU - will put " + block[2:].decode())
-    worldDataHandler.putUpdate(block[2:])
+    worldDataHandler.putUpdate(toData(block[2:]))
   elif block.startswith(b'PR'): #player refresh
     print("PR - will put " + block[2:].decode())
-    me.putUpdate(block[2:]) #give bytes to handler
+    me.putUpdate(toData(block[2:])) #give bytes to handler
   elif block.startswith(b'DU'): #data update
     print("DU - will put " + block[2:].decode())
-    dataHandler.putUpdate(block[2:]) #give bytes to handler
+    dataHandler.putUpdate(toData(block[2:])) #give bytes to handler
   elif block.startswith(b'DR'):
     print("DR - will put " + block[2:].decode())
-    dataHandler.putRefresh(block[2:]) #give bytes to handler
+    dataHandler.putRefresh(toData(block[2:])) #give bytes to handler
   else:
     print("UNKNOWN: " + block.decode())
   
