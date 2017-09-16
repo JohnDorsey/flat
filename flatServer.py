@@ -30,15 +30,11 @@ updateStream = b'' #store the current tick's updates here while distributing the
 
 def clientThread(member): #this runs and handlers a player connection until disconnected
   print("new thread created for " + str(member[1]))
-  try:
-    member[0].send(b'#you_have_joined;')
-    introduce(member)
-    member[0].send(b'#you_have_been_introduced')
-    print("waiting 5 seconds for member[0] to interpret introduction...")
-    time.sleep(5.0)
-  except ConnectionResetError:
-    print(str(member[1]) + ": connection reset during introduction, quitting thread")
-    return
+  member[0].send(b'#you_have_joined;')
+  introduce(member)
+  member[0].send(b'#you_have_been_introduced')
+  print("waiting 5 seconds for member[0] to interpret introduction...")
+  time.sleep(5.0)
   clientTick = 0
   while(True):
     clientTick += 1
