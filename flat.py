@@ -29,13 +29,10 @@ def connect():
   s.settimeout(0.1)
   print("introducing myself as " + hostName + ":" + str(port) + " through notes")
   s.send(b'#hello_I_am_' + hostName.encode() + b':' + str(port).encode()+b';') #greet with note
-  #s.send(b'#hello;') #greet with note
   
 def stop():
   print("Sending Disconnect signal...")
   s.send(b'XX;')
-  #print("response:")
-  #print(s.recv(1024))
   print("disconnecting...")
   s.close()
   print("closing display...")
@@ -43,10 +40,6 @@ def stop():
   print("quitting...")
   quit()
   
-
-
-
-
 
 
 def frame(t=0.125):
@@ -66,9 +59,7 @@ def frame(t=0.125):
   terpStream(streamIn)
       
 
-      
 def keyToDirection(key): #keycode -> axis touple
-  #print(str(key))
   return (1,0) if key==pygame.K_RIGHT else (-1,0) if key==pygame.K_LEFT else (0,-1) if key==pygame.K_UP else (0,1) if key==pygame.K_DOWN else (0,0)
   
 def terpStream(stream):
@@ -81,8 +72,7 @@ def terpStream(stream):
     
 def terpBlock(block):
   if block.startswith(b'BR'): #board refresh
-    #result = boardHandler.putRefresh(block[2:]) #give bytes to handler
-    result = worldBoardHandler.putRefresh(block[2:])
+    result = worldDataHandler.putRefresh(block[2:]) ###Just replaced wbh with wdh
     if not result: #board refresh fails are bad, stop immediately
       print("terminating because putRefresh failed")
       s.send(b'#putrefresh_failed_disconnecting;')
@@ -108,11 +98,10 @@ def terpBlock(block):
     
 
 world = Board((64,64),name="client-world")
-worldBoardHandler = BoardHandler(world)
+#worldBoardHandler = BoardHandler(world)
 worldDataHandler = DataHandler(world.squares)
 
 me = createPlayer()
-#playerHandler = DataHandler(me)
 me.name = "clientPlayerDH"
 
 
