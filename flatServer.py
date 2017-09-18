@@ -64,8 +64,8 @@ def interact(member): #exchange data with specified player
   ph = member[2] #player handler
   try:
     streamIn = c.recv(4320) #record client requests
-  except socket.error:
-    print("client at " + str(member[1]) + " sent nothing")
+  except socket.error as se:
+    print(str(member[1]) + ": " + str(se))
     streamIn = b'#empty;'
   blocks = streamIn.split(b';')
   for block in blocks:
@@ -88,6 +88,7 @@ def interact(member): #exchange data with specified player
       ph.putUpdate(toData(block[2:])) #cut out the b'PU'. combine these selectors soon
       world.add((ph["pos"][0],ph["pos"][1]),1)
       ######NEEDS TO REGISTER CHANGE WITH THE WORLD DATA HANDLER
+      pass
   if len(updateStream) > 0:
     c.send(b'DU'+updateStream+b';') #send this tick's data update to member
   #c.send(b'BR'+worldBoardHandler.getRefresh()+b';') #send a board refresh to member

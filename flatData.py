@@ -1,6 +1,12 @@
 
 
+#DataHandler tracks changes made by its owner, it emulates these changes when the owner accesses it.
+#DataHandler.getUpdate() gets relevant changes for remote applications, also applying the changes locally.
+#DataHandler.getRefresh() gets all data to send to remote applications, without applying changes.
 
+#what's new after the rewrite:
+#DataHandler's recursive calls to getRefresh and getUpdate yeild nested primatives all the way back up, which are encoded into bytes only at the last possible second, in the socket send statement.
+#DataHandler's recursive calls to putUpdate [or putRefresh] accept nested primatives, which have been decoded from recieved bytes, stripped of their signal phrases/terminators.
 
 
 class DataHandler:
@@ -18,10 +24,10 @@ class DataHandler:
         print("self.name: " + str(key) + " does not exist")
     
   def __setitem__(self,key,value):
-    if not (self.source.__contains__(key)):
+    if not (self.source.__contains__(key)): #any item modified must be made part of the source
       self.source[key] = value
-    self.changes[key] = value
-    if self.source[key] == self.changes[key]:
+    self.changes[key] = value #the emulated value, either original or changed, must be made equal to value
+    if self.source[key] == self.changes[key]: #after adding the change, maybe remove it.
       self.changes.delitem(key)
       
   def applyChanges(self):
@@ -31,23 +37,20 @@ class DataHandler:
 
   def getUpdate(self):
     result = {}
-    #result = self.changes
-    for item in self.changes:
+    for item in self.changes: #review whether this should be avoided
       result[item] = encodeUpdate(self.changes[item])
     self.changes = {}
     return result
     
   def putUpdate(self,update):
     for key in update:
-      if self.changes.__contains__(key):
+      if self.changes.__contains__(key): #don't hold onto any changes that are remotely overwritten
         self.changes.delitem(key)
-      #self.source[key] = update[key]
       decodeUpdate(self.source[key],update[key])
-      #self.changes[key] = update[key]
 
   def getRefresh(self):
     result = {}
-    for key in self.source:
+    for key in self.source: #review whether this should be avoided
       try:
         result[key] = encodeRefresh(self.changes[key])
       except KeyError:
@@ -56,6 +59,7 @@ class DataHandler:
     
   def putRefresh(self,refresh):
     self.source = refresh
+    self.changes = {} #whatever you have been doing with your local data, you are wrong.
 
     
     
