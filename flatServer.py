@@ -70,10 +70,9 @@ def interact(member): #exchange data with specified player
   blocks = streamIn.split(b';')
   for block in blocks:
     if len(block) < 1:
-      pass
+      print("received empty block")
     elif block.startswith(b'#'):
       print(str(block))
-      pass
     elif block.startswith(b'XX'): ##XX from client to server means disconnect me
       print("XX - the client will be disconnected")
       c.send(b'#xx_recieved_all_communications_end_instantly;')
@@ -89,6 +88,8 @@ def interact(member): #exchange data with specified player
       world.add((ph["pos"][0],ph["pos"][1]),1)
       ######NEEDS TO REGISTER CHANGE WITH THE WORLD DATA HANDLER
       pass
+    else:
+      print("UNKNOWN (" + str(len(block)) + " bytes)" + block.decode())
   if len(updateStream) > 0:
     c.send(b'DU'+updateStream+b';') #send this tick's data update to member
   #c.send(b'BR'+worldBoardHandler.getRefresh()+b';') #send a board refresh to member
@@ -105,6 +106,7 @@ def introduce(member):
   member[0].send(b'BR'+toStream(worldDataHandler.getRefresh())+b';') ###just replaced wbh with wdh
   member[0].send(b'PR'+toStream(member[2].getRefresh())+b';') #send a player refresh to member
   member[0].send(b'DR'+toStream(dataHandler.getRefresh())+b';') #send a data refresh to member
+  print("all introductions have been sent")
   
 
 

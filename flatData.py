@@ -14,6 +14,7 @@ class DataHandler:
     self.source, self.name = source, name
     self.changes = {}
     self.gen = range(0,len(self.source)) if type(self.source)==list else iter(self.source)
+    self.baseResult = lambda: {} if type(self.source)==dict else list(0 for i in range(len(source)))
     
   def __getitem__(self,key):
     try:
@@ -50,7 +51,7 @@ class DataHandler:
       decodeUpdate(self.source[key],update[key])
 
   def getRefresh(self):
-    result = {}
+    result = self.baseResult() #the resfresh should be the same type as the content?????????????
     for key in self.gen: #review whether this should be avoided
       try:
         result[key] = encodeRefresh(self.changes[key])
@@ -93,7 +94,7 @@ def decodeRefresh(object,input):
     
     
 def toStream(object):
-  return str(object).encode()
+  return str(object).replace(" ","").encode()
   
 def toData(object):
   return eval(object.decode())

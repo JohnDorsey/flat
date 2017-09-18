@@ -62,13 +62,14 @@ def keyToDirection(key): #keycode -> axis touple
 def terpStream(stream):
   blocks = stream.split(b';')
   for block in blocks:
-    if block.startswith(b'#'):
-      print(str(block))
-    else:
       terpBlock(block)
     
 def terpBlock(block):
-  if block.startswith(b'BR'): #board refresh
+  if len(block) <= 0:
+    print("received empty block")
+  elif block.startswith(b'#'):
+    print(str(block))
+  elif block.startswith(b'BR'): #board refresh
     print("BR")
     worldDataHandler.putRefresh(block[2:]) ###Just replaced wbh with wdh
   elif block.startswith(b'BU'):
@@ -84,7 +85,7 @@ def terpBlock(block):
     print("DR - will put " + block[2:].decode())
     dataHandler.putRefresh(toData(block[2:])) #give bytes to handler
   else:
-    print("UNKNOWN: " + block.decode())
+    print("UNKNOWN (" + str(len(block)) + " bytes): " + block.decode())
   
      
      
