@@ -13,6 +13,7 @@ class DataHandler:
   def __init__(self,source,name="unnDH"):
     self.source, self.name = source, name
     self.changes = {}
+    self.gen = range(0,len(self.source)) if type(self.source)==list else iter(self.source)
     
   def __getitem__(self,key):
     try:
@@ -50,7 +51,7 @@ class DataHandler:
 
   def getRefresh(self):
     result = {}
-    for key in self.source: #review whether this should be avoided
+    for key in self.gen: #review whether this should be avoided
       try:
         result[key] = encodeRefresh(self.changes[key])
       except KeyError:

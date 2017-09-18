@@ -102,7 +102,7 @@ def interact(member): #exchange data with specified player
 def introduce(member):
   print("introducing member to the game")
   member[0].send(b'#intro;')
-  member[0].send(b'BR'+worldDataHandler.getRefresh()+b';') ###just replaced wbh with wdh
+  member[0].send(b'BR'+toStream(worldDataHandler.getRefresh())+b';') ###just replaced wbh with wdh
   member[0].send(b'PR'+toStream(member[2].getRefresh())+b';') #send a player refresh to member
   member[0].send(b'DR'+toStream(dataHandler.getRefresh())+b';') #send a data refresh to member
   
