@@ -72,11 +72,8 @@ def terpStream(stream):
     
 def terpBlock(block):
   if block.startswith(b'BR'): #board refresh
-    result = worldDataHandler.putRefresh(block[2:]) ###Just replaced wbh with wdh
-    if not result: #board refresh fails are bad, stop immediately
-      print("terminating because putRefresh failed")
-      s.send(b'#putrefresh_failed_disconnecting;')
-      stop()
+    print("BR")
+    worldDataHandler.putRefresh(block[2:]) ###Just replaced wbh with wdh
   elif block.startswith(b'BU'):
     print("BU - will put " + block[2:].decode())
     worldDataHandler.putUpdate(toData(block[2:]))
