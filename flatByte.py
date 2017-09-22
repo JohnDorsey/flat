@@ -12,5 +12,5 @@ class ByteHandler(DataHandler):
     
   def putRefresh(self,refresh):
     print("putting refresh (direct) for " + self.name)
-    self.changes = {}
+    self.changes.clear()
     self.source = refresh
