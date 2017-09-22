@@ -15,6 +15,7 @@ class DataHandler:
     self.changes = {}
     self.gen = range(0,len(self.source)) if type(self.source)==list else iter(self.source)
     self.baseResult = lambda: {} if type(self.source)==dict else list(0 for i in range(len(source)))
+    self.has = lambda check: self.source.__contains__(check) if type(self.source)==dict else check < len(self.source)
     
   def __getitem__(self,key):
     try:
@@ -26,15 +27,21 @@ class DataHandler:
         print(self.name + ": " + str(key) + " does not exist")
     
   def __setitem__(self,key,value):
-    if not (self.source.__contains__(key)): #any item modified must be made part of the source
+    if not (self.has(key)): #any item modified must be made part of the source
       self.source[key] = value
       print(self.name + ": adding new item to source: " + str(key) + ":" + str(value))
     self.changes[key] = value #the emulated value, either original or changed, must be made equal to value
     if self.source[key] == self.changes[key]: #after adding the change, maybe remove it.
-      self.changes.delitem(key)
+      self.changes.__delitem__(key)
       
   def __str__(self):
-    return "{name:" + self.name + ",source:" + str(self.source) + ",changes:" + str(self.changes) + "}"
+    stringSource = {}
+    stringChanges = {}
+    for key in self.gen:
+      stringSource[key] = str(self.source[key])
+    for key in self.changes:
+      stringChanges[key] = str(self.changes[key])
+    return "{name:" + self.name + ",source:" + str(stringSource) + ",changes:" + str(stringChanges) + "}"
       
   def applyChanges(self):
     for key in self.changes:
@@ -64,7 +71,8 @@ class DataHandler:
     return result
     
   def putRefresh(self,refresh):
-    self.source = refresh
+    for key in self.gen:
+      decodeRefresh(key,refresh[key])
     self.changes.clear() #whatever you have been doing with your local data, you are wrong.
 
 
@@ -80,7 +88,7 @@ def encodeUpdate(object): #these methods allow recursion where __str__ would bre
     
 def encodeRefresh(object):
   try:
-    return object.getRefresh()
+    return type(object).getRefresh(object)
   except AttributeError:
     return str(object).encode()
 
@@ -92,7 +100,7 @@ def decodeUpdate(object,input):
     
 def decodeRefresh(object,input):
   try:
-    object.putRefresh(input)
+    type(object).putRefresh(object,input)
   except AttributeError:
     object = input
     

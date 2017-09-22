@@ -21,7 +21,7 @@ s.settimeout(0.1)
 world = Board((64,64),name="server-world") #the server copy of the board
 #boardHandler = BoardHandler(board) #translates instruction bytes and manipulates board
 #worldBoardHandler = BoardHandler(world,name="serverWBH")
-worldDataHandler = DataHandler(world.squares,name="serverWDH")
+#worldDataHandler = DataHandler(world.squares,name="serverWDH")
 world.preset(name="rings")
 
 dataHandler = DataHandler({},name="serverDH")
@@ -94,7 +94,7 @@ def interact(member): #exchange data with specified player
   if len(updateStream) > 0:
     c.send(b'DU'+updateStream+b';') #send this tick's data update to member
   #c.send(b'BR'+worldBoardHandler.getRefresh()+b';') #send a board refresh to member
-  c.send(b'BU'+toStream(worldDataHandler.getUpdate())+b';') #send a board update to member
+  c.send(b'BU'+toStream(world.squares.getUpdate())+b';') #send a board update to member
   return 0
 
 
@@ -104,7 +104,7 @@ def interact(member): #exchange data with specified player
 def introduce(member):
   print("introducing member to the game")
   member[0].send(b'#intro;')
-  member[0].send(b'BR'+toStream(worldDataHandler.getRefresh())+b';') ###just replaced wbh with wdh
+  member[0].send(b'BR'+toStream(world.squares.getRefresh())+b';') ###just replaced wbh with wdh
   member[0].send(b'PR'+toStream(member[2].getRefresh())+b';') #send a player refresh to member
   member[0].send(b'DR'+toStream(dataHandler.getRefresh())+b';') #send a data refresh to member
   print("all introductions have been sent")

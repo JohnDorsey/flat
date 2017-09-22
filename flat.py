@@ -72,10 +72,10 @@ def terpBlock(block):
     print(str(block))
   elif block.startswith(b'BR'): #board refresh
     print("BR")
-    worldDataHandler.putRefresh(block[2:]) ###Just replaced wbh with wdh
+    world.squares.putRefresh(block[2:]) ###Just replaced wbh with wdh
   elif block.startswith(b'BU'):
     print("BU - will put " + block[2:].decode())
-    worldDataHandler.putUpdate(toData(block[2:]))
+    world.squares.putUpdate(toData(block[2:]))
   elif block.startswith(b'PR'): #player refresh
     print("PR - will put " + block[2:].decode())
     me.putUpdate(toData(block[2:])) #give bytes to handler
@@ -95,7 +95,7 @@ def terpBlock(block):
 
 world = Board((64,64),name="client-world")
 #worldBoardHandler = BoardHandler(world)
-worldDataHandler = DataHandler(world.squares)
+#worldDataHandler = DataHandler(world.squares)
 
 me = createPlayer()
 me.name = "clientPlayerDH"

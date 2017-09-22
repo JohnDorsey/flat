@@ -2,7 +2,8 @@
 import random
 import pygame
 
-
+from flatData import *
+from flatByte import *
 
       
 
@@ -10,7 +11,7 @@ class Board:
   def __init__(self,size,name="untitled"):
     self.name, self.size = name, size
     self.maxValue = 1
-    self.squares = list(list(0 for i in range(size[0])) for ii in range(size[1]))
+    self.squares = DataHandler([ByteHandler([0 for i in range(self.size[0])],name=self.name+"_squares_DH_"+str(ii)) for ii in range(self.size[1])],name=self.name+"_squaresDH")
     
   def set(self,pos,value):
     self.squares[pos[1]][pos[0]] = value
@@ -37,9 +38,15 @@ class Board:
     return 1 if 2*abs(limit/2 - value) < width else 0
 
   def draw(self,target): #make it scrollable someday
+    #print("drawing: " + str(self.squares)[0:256])
     for y in range(self.size[1]):
       for x in range(self.size[0]):
-        pygame.draw.rect(target,self.colorOf(self.squares[y][x]),((x*8)+1,(y*8)+1,7,7),4)
+        pygame.draw.rect(target,self.colorAt(x,y),((x*8)+1,(y*8)+1,7,7),4)
+      
+  def colorAt(self,x,y):
+    row = self.squares[y]
+    square = row[x]
+    return self.colorOf(square)
       
   def colorOf(self,id): #board colors
     c = (((256/(self.maxValue+1))*id)%256)
