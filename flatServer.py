@@ -7,6 +7,17 @@ from flatByte import *
 import time
 
 
+
+world = Board((64,64),name="server-world") #the server copy of the board
+#boardHandler = BoardHandler(board) #translates instruction bytes and manipulates board
+#worldBoardHandler = BoardHandler(world,name="serverWBH")
+#worldDataHandler = DataHandler(world.squares,name="serverWDH")
+world.preset(name="checkers")
+dataHandler = DataHandler({},name="serverDH")
+updateStream = b'' #store the current tick's updates here while distributing them to clients
+world.squares.applyChanges()
+
+
 print("initializing AF_INET SOCK_STREAM socket...")
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 hostName = socket.gethostname()
@@ -18,15 +29,6 @@ s.setblocking(False)
 s.settimeout(0.1)
 
 
-world = Board((64,64),name="server-world") #the server copy of the board
-#boardHandler = BoardHandler(board) #translates instruction bytes and manipulates board
-#worldBoardHandler = BoardHandler(world,name="serverWBH")
-#worldDataHandler = DataHandler(world.squares,name="serverWDH")
-world.preset(name="rings")
-
-dataHandler = DataHandler({},name="serverDH")
-
-updateStream = b'' #store the current tick's updates here while distributing them to clients
 
 
 def clientThread(member): #this runs and handlers a player connection until disconnected
@@ -64,7 +66,7 @@ def interact(member): #exchange data with specified player
   c = member[0] #connection
   ph = member[2] #player handler
   try:
-    streamIn = c.recv(4320) #record client requests
+    streamIn = c.recv(16384) #record client requests
   except socket.error as se:
     print(str(member[1]) + ": " + str(se))
     streamIn = b'#empty;'
@@ -93,7 +95,6 @@ def interact(member): #exchange data with specified player
       print("UNKNOWN (" + str(len(block)) + " bytes)" + block.decode())
   if len(updateStream) > 0:
     c.send(b'DU'+updateStream+b';') #send this tick's data update to member
-  #c.send(b'BR'+worldBoardHandler.getRefresh()+b';') #send a board refresh to member
   c.send(b'BU'+toStream(world.squares.getUpdate())+b';') #send a board update to member
   return 0
 
@@ -104,7 +105,7 @@ def interact(member): #exchange data with specified player
 def introduce(member):
   print("introducing member to the game")
   member[0].send(b'#intro;')
-  member[0].send(b'BR'+toStream(world.squares.getRefresh())+b';') ###just replaced wbh with wdh
+  member[0].send(b'BR'+toStream(world.squares.getRefresh())+b';')
   member[0].send(b'PR'+toStream(member[2].getRefresh())+b';') #send a player refresh to member
   member[0].send(b'DR'+toStream(dataHandler.getRefresh())+b';') #send a data refresh to member
   print("all introductions have been sent")
@@ -116,7 +117,7 @@ def introduce(member):
 print("starting server thread...")
 _thread.start_new_thread(serverThread,(0.125,))
 
-print("waiting for first connection")
+print("waiting for first connection...")
 
 while(True):
   try: #let new players join

@@ -7,10 +7,13 @@ class ByteHandler(DataHandler):
     DataHandler.__init__(self,source,name=name)
     
   def getRefresh(self):
-    print("getting refresh (direct) for " + self.name)
-    result = b''
+    print("getting refresh (direct) for " + self.name + ": "),
+    #result = b''
+    result = ""
     for item in self.source:
-      result += item.to_bytes(1,"little")
+      #result += item.to_bytes(1,"little")
+      result += str(item)
+    print(result)
     return result
     
   def putRefresh(self,refresh):

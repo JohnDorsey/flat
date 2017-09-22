@@ -64,10 +64,7 @@ class DataHandler:
   def getRefresh(self):
     result = self.baseResult() #the resfresh should be the same type as the content?????????????
     for key in self.gen: #review whether this should be avoided
-      try:
-        result[key] = encodeRefresh(self.changes[key])
-      except KeyError:
-        result[key] = encodeRefresh(self.source[key])
+      result[key] = encodeRefresh(self.source[key])
     return result
     
   def putRefresh(self,refresh):
@@ -111,3 +108,16 @@ def toStream(object):
   
 def toData(object):
   return eval(object.decode())
+
+  
+'''
+def toStream(object):
+  if type(object)==dict:
+    result = b'{'
+    for key in object:
+      result += str(object[key]).encode() + b':' + (str(object).encode() if not type(object)==bytes else object) + b','
+    result = result[:-1] + b'}'
+    return result.replace(b' ',b'')
+  else:
+    return str(object).replace(" ","").encode()
+'''

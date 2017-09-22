@@ -51,7 +51,7 @@ def frame(t=0.125):
       Player.move(me,keyToDirection(ev.key))
       s.send(b'PR'+toStream(me.getUpdate())+b';')
   try:
-    streamIn = s.recv(4320) #recieve data from server
+    streamIn = s.recv(16384) #recieve data from server
   except socket.error:
     return
   terpStream(streamIn)
@@ -63,7 +63,7 @@ def keyToDirection(key): #keycode -> axis touple
 def terpStream(stream):
   blocks = stream.split(b';')
   for block in blocks:
-    terpBlock(blocks)
+    terpBlock(block)
     
 def terpBlock(block):
   if len(block) <= 0:
@@ -71,8 +71,8 @@ def terpBlock(block):
   elif block.startswith(b'#'):
     print(str(block))
   elif block.startswith(b'BR'): #board refresh
-    print("BR")
-    world.squares.putRefresh(block[2:]) ###Just replaced wbh with wdh
+    print("BR - will put " + block[2:].decode())
+    world.squares.putRefresh(toData(block[2:]))
   elif block.startswith(b'BU'):
     print("BU - will put " + block[2:].decode())
     world.squares.putUpdate(toData(block[2:]))
