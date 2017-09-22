@@ -32,6 +32,9 @@ class DataHandler:
     if self.source[key] == self.changes[key]: #after adding the change, maybe remove it.
       self.changes.delitem(key)
       
+  def __str__(self):
+    return "{name:" + self.name + ",source:" + str(self.source) + ",changes:" + str(self.changes) + "}"
+      
   def applyChanges(self):
     for key in self.changes:
       self.source[key] = self.changes[key]
@@ -62,6 +65,7 @@ class DataHandler:
   def putRefresh(self,refresh):
     self.source = refresh
     self.changes = {} #whatever you have been doing with your local data, you are wrong.
+
 
     
     
