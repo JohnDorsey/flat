@@ -63,11 +63,11 @@ def keyToDirection(key): #keycode -> axis touple
 def terpStream(stream):
   blocks = stream.split(b';')
   for block in blocks:
-      terpBlock(block)
+    terpBlock(blocks)
     
 def terpBlock(block):
   if len(block) <= 0:
-    print("received empty block")
+    pass
   elif block.startswith(b'#'):
     print(str(block))
   elif block.startswith(b'BR'): #board refresh

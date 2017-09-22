@@ -71,7 +71,7 @@ def interact(member): #exchange data with specified player
   blocks = streamIn.split(b';')
   for block in blocks:
     if len(block) < 1:
-      print("received empty block")
+      pass
     elif block.startswith(b'#'):
       print(str(block))
     elif block.startswith(b'XX'): ##XX from client to server means disconnect me
