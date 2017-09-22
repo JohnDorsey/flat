@@ -4,39 +4,6 @@ import pygame
 
 
 
-class BoardHandler:
-  def __init__(self,board,name="unnBH"):
-    self.board = board
-    
-  def putRefresh(self,refreshStream):
-    #print("putting refresh for " + self.board.name) #helpful information before a crash
-    #print("refresh stream is " + refreshStream[:32].decode() + "... len=" + str(len(refreshStream)))
-    x, y = 0, 0
-    for current in refreshStream: #for each byte
-      if x==self.board.size[0]: #stay bounded horizontally
-        x = 0
-        y += 1
-      if y >= self.board.size[1]: #stay bounded vertically
-        print("at x=" + str(x) + " y=" + str(y) + " THE BOARD EXPLODED!!!!") #bad
-        return False #returning false causes quit
-      self.board.squares[y][x] = current #decode
-      x += 1
-    return True
-      
-  def getRefresh(self):
-    print("getting refresh for " + self.board.name)
-    refreshStream = b'' #start with empty bytes
-    for row in self.board.squares:
-      for square in row:
-        refreshStream += square.to_bytes(1,"little") #encode
-    print("refresh stream is " + refreshStream[:32].decode() + "... len=" + str(len(refreshStream)))
-    return refreshStream
-
-    
-    
-    
-    
-    
       
 
 class Board:
