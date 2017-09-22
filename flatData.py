@@ -39,7 +39,7 @@ class DataHandler:
   def applyChanges(self):
     for key in self.changes:
       self.source[key] = self.changes[key]
-    self.changes = {}
+    self.changes.clear()
 
   def getUpdate(self):
     result = {}
@@ -65,7 +65,7 @@ class DataHandler:
     
   def putRefresh(self,refresh):
     self.source = refresh
-    self.changes = {} #whatever you have been doing with your local data, you are wrong.
+    self.changes.clear() #whatever you have been doing with your local data, you are wrong.
 
 
     
