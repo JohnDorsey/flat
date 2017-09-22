@@ -40,7 +40,7 @@ def stop():
   
 
 
-def frame(t=0.125):
+def frame(t=0.0625):
   time.sleep(t)
   pygame.display.flip()
   for ev in pygame.event.get():
@@ -67,10 +67,12 @@ def terpStream(stream):
     
 def terpBlock(block):
   if len(block) <= 0:
-    pass
+    return
   elif block.startswith(b'#'):
     print(str(block))
-  elif block.startswith(b'BR'): #board refresh
+    return
+  print(str(len(block)) + "B: ",end="")
+  if block.startswith(b'BR'): #board refresh
     print("BR - will put " + block[2:].decode())
     world.squares.putRefresh(toData(block[2:]))
   elif block.startswith(b'BU'):

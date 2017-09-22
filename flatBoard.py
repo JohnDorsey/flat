@@ -18,8 +18,9 @@ class Board:
     self.bound(pos)
     
   def add(self,pos,value):
-    self.squares[pos[1]][pos[0]] += value
     self.bound(pos)
+    self.squares[pos[1]][pos[0]] += value
+    #self.squares[pos[1]][pos[0]]
     
   def bound(self,pos):
     self.squares[pos[1]][pos[0]] %= self.maxValue+1

@@ -53,6 +53,7 @@ class DataHandler:
     for item in self.changes: #review whether this should be avoided
       result[item] = encodeUpdate(self.changes[item])
     self.applyChanges()
+    #print(self.name + ": getUpdate result: " + str(result))
     return result
     
   def putUpdate(self,update):

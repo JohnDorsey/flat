@@ -57,7 +57,7 @@ def serverThread(interval):
   while(True):
     serverTick += 1
     updateStream = toStream(dataHandler.getUpdate())
-    #world.add((1,4),1)
+    world.add((1,4),1)
     #worldDataHandler[1][4] = 
     time.sleep(interval)
   
@@ -72,10 +72,11 @@ def interact(member): #exchange data with specified player
     streamIn = b'#empty;'
   blocks = streamIn.split(b';')
   for block in blocks:
-    if len(block) < 1:
-      pass
-    elif block.startswith(b'#'):
+    if len(block) > 0:
+      print(str(len(block)) + "B: ",end="")
+    if block.startswith(b'#'):
       print(str(block))
+      pass
     elif block.startswith(b'XX'): ##XX from client to server means disconnect me
       print("XX - the client will be disconnected")
       c.send(b'#xx_recieved_all_communications_end_instantly;')
@@ -91,10 +92,11 @@ def interact(member): #exchange data with specified player
       world.add((ph["pos"][0],ph["pos"][1]),1)
       ######NEEDS TO REGISTER CHANGE WITH THE WORLD DATA HANDLER
       pass
-    else:
-      print("UNKNOWN (" + str(len(block)) + " bytes)" + block.decode())
+    elif len(block) >= 1:
+      print("UNKNOWN - " + block.decode())
   if len(updateStream) > 0:
     c.send(b'DU'+updateStream+b';') #send this tick's data update to member
+  world.preset("randomize")
   c.send(b'BU'+toStream(world.squares.getUpdate())+b';') #send a board update to member
   return 0
 

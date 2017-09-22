@@ -23,3 +23,12 @@ class ByteHandler(DataHandler):
     #for i in range(len(self.source)):
     #  self.source[i] = int(refresh[i])
     #self.source = [refresh[i] for i in range(len(self.source))]
+    
+  def getUpdate(self):
+    result = DataHandler.getUpdate(self)
+    print("the ByteHandler getUpdate is: " + str(result))
+    return result
+    
+  def putUpdate(self,update):
+    print("the ByteHandler putUpdate is: " + str(update))
+    DataHandler.putUpdate(self,update)
