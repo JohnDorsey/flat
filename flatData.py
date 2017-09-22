@@ -38,9 +38,10 @@ class DataHandler:
   def applyChanges(self):
     for key in self.changes:
       self.source[key] = self.changes[key]
-      self.changes.delitem[key]
+    self.changes = {}
 
   def getUpdate(self):
+    self.applyChanges()
     result = {}
     for item in self.changes: #review whether this should be avoided
       result[item] = encodeUpdate(self.changes[item])
