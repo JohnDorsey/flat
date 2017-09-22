@@ -23,11 +23,12 @@ class DataHandler:
       try:
         return self.source[key]
       except KeyError:
-        print("self.name: " + str(key) + " does not exist")
+        print(self.name + ": " + str(key) + " does not exist")
     
   def __setitem__(self,key,value):
     if not (self.source.__contains__(key)): #any item modified must be made part of the source
       self.source[key] = value
+      print(self.name + ": adding new item to source: " + str(key) + ":" + str(value))
     self.changes[key] = value #the emulated value, either original or changed, must be made equal to value
     if self.source[key] == self.changes[key]: #after adding the change, maybe remove it.
       self.changes.delitem(key)
@@ -41,11 +42,10 @@ class DataHandler:
     self.changes = {}
 
   def getUpdate(self):
-    self.applyChanges()
     result = {}
     for item in self.changes: #review whether this should be avoided
       result[item] = encodeUpdate(self.changes[item])
-    self.changes = {}
+    self.applyChanges()
     return result
     
   def putUpdate(self,update):
