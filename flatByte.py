@@ -1,5 +1,5 @@
 
-
+from flatData import *
 
 class ByteHandler(DataHandler):
 
@@ -8,9 +8,12 @@ class ByteHandler(DataHandler):
     
   def getRefresh(self):
     print("getting refresh (direct) for " + self.name)
-    return self.source
+    result = b''
+    for item in self.source:
+      result += item.to_bytes(1,"little")
+    return result
     
   def putRefresh(self,refresh):
     print("putting refresh (direct) for " + self.name)
     self.changes.clear()
-    self.source = refresh
+    self.source = list(refresh[i] for i in range(len(refresh)))
