@@ -51,3 +51,8 @@ To-do:
 
 
 This project's development has been slowed by outside forces.
+
+This project is accessible at github.com/JohnDorsey/flat
+Posts about the project can be found at john-dorsey.com
+Suggestions/comments appreciated!
+
