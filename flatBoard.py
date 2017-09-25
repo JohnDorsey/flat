@@ -11,7 +11,7 @@ class Board:
   def __init__(self,size,name="untitled"):
     self.name, self.size = name, size
     self.maxValue = 1
-    self.squares = DataHandler([ByteHandler([2 for i in range(self.size[0])],name=self.name+"_squares_DH_"+str(ii)) for ii in range(self.size[1])],name=self.name+"_squaresDH")
+    self.squares = DataHandler([ByteHandler([2 for i in range(self.size[0])],name=self.name+"_squares_BH_"+str(ii)) for ii in range(self.size[1])],name=self.name+"_squaresDH")
     
   def set(self,pos,value):
     self.squares[pos[1]][pos[0]] = value
@@ -62,7 +62,8 @@ class Board:
     try: #remove me?
       c = (((256/(self.maxValue+1))*id)%256)
     except TypeError as te:
-      print("colorOf: type error using the " + str(type(id)) + " id = " + str(id))
-      c = 2
+      #print("colorOf: type error using the " + str(type(id)) + " id = " + str(id))
+      #c = 2
+      return (255,255,0,255)
     return (c,c,c,255)
       
