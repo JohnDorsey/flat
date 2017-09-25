@@ -19,6 +19,7 @@ class DataHandler:
     self.baseResult = lambda: {} if type(self.source)==dict else list(0 for i in range(len(source)))
     self.has = lambda check: self.source.__contains__(check) if type(self.source)==dict else check < len(self.source)
     self.parent = parent
+    self.mykey = "mykey"
     self.adopt()
     
   def __getitem__(self,key):
@@ -64,7 +65,7 @@ class DataHandler:
   def putUpdate(self,update):
     for key in update:
       if self.changes.__contains__(key): #don't hold onto any changes that are remotely overwritten
-        self.changes.delitem(key)
+        self.changes.__delitem__(key)
       if not decodeUpdate(self.source[key],update[key]):
         self.source[key] = update[key]
 
@@ -82,11 +83,11 @@ class DataHandler:
 
   def register(self,child=None):
     if not child==None:
-      if type(self.source)!=list:
-        print(self.name + ": cannot register child who asked, they are not stored in a list")
+      if type(self.source)==list:
+        self.changes[self.source.index(child)] = child
       else:
-        index = self.source.index(child)
-        self.changes[index] = child
+        self.changes[child.mykey] = child
+        #don't catch exceptions because things without mykey also won't call this
     if not self.parent==None:
       self.parent.register(self)
     
@@ -97,6 +98,7 @@ class DataHandler:
       tries += 1
       try:
         self.source[key].parent = self
+        self.source[key].mykey = key
       except AttributeError:
         fails += 1
     print(self.name + ": adopted " + str(tries-fails) + " of " + str(tries) + " children.")
