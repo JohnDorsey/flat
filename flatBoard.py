@@ -49,11 +49,20 @@ class Board:
         pygame.draw.rect(target,self.colorAt(x,y),((x*8)+1,(y*8)+1,7,7),4)
       
   def colorAt(self,x,y):
-    row = self.squares[y]
-    square = row[x]
-    return self.colorOf(square)
+    try:
+      row = self.squares[y]
+      square = row[x]
+      return self.colorOf(square)
+    except KeyError as ke:
+      print("colorAt: key error using keys: " + str(x) + ", " + str(y) + " in the " + str(type(self.squares)))
+      print("squares is equal to: " + str(self.squares))
+      return (255,0,0,255)
       
   def colorOf(self,id): #board colors
-    c = (((256/(self.maxValue+1))*id)%256)
+    try: #remove me?
+      c = (((256/(self.maxValue+1))*id)%256)
+    except TypeError as te:
+      print("colorOf: type error using the " + str(type(id)) + " id = " + str(id))
+      c = 2
     return (c,c,c,255)
       

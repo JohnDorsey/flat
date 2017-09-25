@@ -4,6 +4,7 @@ from flatBoard import *
 from flatPlayer import *
 from flatData import *
 from flatByte import *
+from flatCodec import *
 import time
 
 
@@ -57,7 +58,7 @@ def serverThread(interval):
   while(True):
     serverTick += 1
     updateStream = toStream(dataHandler.getUpdate())
-    world.add((1,4),1)
+    #world.add((1,4),1)
     #worldDataHandler[1][4] = 
     time.sleep(interval)
   
@@ -96,7 +97,7 @@ def interact(member): #exchange data with specified player
       print("UNKNOWN - " + block.decode())
   if len(updateStream) > 0:
     c.send(b'DU'+updateStream+b';') #send this tick's data update to member
-  world.preset("randomize")
+  #world.preset("randomize")
   c.send(b'BU'+toStream(world.squares.getUpdate())+b';') #send a board update to member
   return 0
 

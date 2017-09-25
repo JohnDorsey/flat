@@ -15,7 +15,7 @@ class ByteHandler(DataHandler):
       result += str(item)
     print(result)
     return result
-    
+  
   def putRefresh(self,refresh):
     print("putting refresh (direct) for " + self.name)
     self.changes.clear()
@@ -23,12 +23,19 @@ class ByteHandler(DataHandler):
     #for i in range(len(self.source)):
     #  self.source[i] = int(refresh[i])
     #self.source = [refresh[i] for i in range(len(self.source))]
+  
+
     
-  def getUpdate(self):
+  def adopt(self): #adopt overridden because ByteHandlers have no non-primative children
+    pass
+    
+    
+   
+  def putUpdate(self,update): #debugging only
+    print("the ByteHandler putUpdate is: " + str(update))
+    DataHandler.putUpdate(self,update)
+    
+  def getUpdate(self): #debugging only
     result = DataHandler.getUpdate(self)
     print("the ByteHandler getUpdate is: " + str(result))
     return result
-    
-  def putUpdate(self,update):
-    print("the ByteHandler putUpdate is: " + str(update))
-    DataHandler.putUpdate(self,update)

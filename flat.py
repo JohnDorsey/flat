@@ -5,6 +5,7 @@ from flatBoard import *
 from flatPlayer import *
 from flatData import *
 from flatByte import *
+from flatCodec import *
 import pygame
 
 print("initializing pygame...")
