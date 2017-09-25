@@ -34,7 +34,7 @@ Certain classes may extend the DataHandler class to add custom encoding formats 
 To accomplish this, a specialized class to handle uniform-length objects is created. It inherits most of its methods from the DataHandler, but overrides getRefresh and putRefresh with new definitions which use concatenated strings to represent the source in a refresh.
 
 To-do:
-* Break out encoding methods into a new class.
+* replace self-registration with something that works
 * Make DataHandler and then ByteHandler work, in a predictable and explainable manner.
 * Make children of DataHandlers register themselves in the changes pool when they change themselves.
 * Make game data sync correctly, and make client draw opponents.
