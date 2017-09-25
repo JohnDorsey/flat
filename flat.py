@@ -7,6 +7,7 @@ from flatData import *
 from flatByte import *
 from flatCodec import *
 import pygame
+import random
 
 print("initializing pygame...")
 pygame.init()
@@ -16,7 +17,7 @@ screen = pygame.display.set_mode((512,512))
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM) #create socket
 #hostName = socket.gethostname() #get hostname for creating connection, assuming it is on this host
 hostName = "192.168.56.1"
-port=25564
+port = 25564
 
 def connect():
   s.connect((hostName,port)) #connect to server
@@ -44,6 +45,8 @@ def stop():
 def frame(t=0.0625):
   time.sleep(t)
   pygame.display.flip()
+  #just for debugging:
+  me["debugData"]["clientSays"] = random.randint(-100,-1)
   for ev in pygame.event.get():
     if ev.type == pygame.QUIT:
       s.send(b'#goodbye;')

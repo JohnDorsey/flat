@@ -5,7 +5,7 @@ from flatData import *
 pygame.init()
 
 def createPlayer(name="cpDH"):
-  return DataHandler({"pos":(random.randint(0,32),random.randint(0,32)),"unchanging":"same"},name=name)
+  return DataHandler({"pos":(random.randint(0,32),random.randint(0,32)),"unchanging":"same","debugData":DataHandler({"clientSays":0,"serverSays":0},name="debugDH")},name=name)
     
 class Player:
   def move(data,direction):

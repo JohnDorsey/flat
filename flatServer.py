@@ -6,6 +6,7 @@ from flatData import *
 from flatByte import *
 from flatCodec import *
 import time
+import random
 
 
 
@@ -42,6 +43,7 @@ def clientThread(member): #this runs and handlers a player connection until disc
   clientTick = 0
   while(True):
     clientTick += 1
+    member[2]["debugData"]["serverSays"] = random.randint(1,100)
     try:
       result = interact(member)
       if result != 0:
