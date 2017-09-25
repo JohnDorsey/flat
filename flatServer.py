@@ -10,7 +10,7 @@ import random
 
 
 
-world = Board((16,16),name="server-world") #the server copy of the board
+world = Board((64,64),name="server-world") #the server copy of the board
 #boardHandler = BoardHandler(board) #translates instruction bytes and manipulates board
 #worldBoardHandler = BoardHandler(world,name="serverWBH")
 #worldDataHandler = DataHandler(world.squares,name="serverWDH")
@@ -100,6 +100,7 @@ def interact(member): #exchange data with specified player
   if len(updateStream) > 0:
     c.send(b'DU'+updateStream+b';') #send this tick's data update to member
   #world.preset("randomize")
+  c.send(b'PU'+toStream(ph.getUpdate())+b';')
   c.send(b'BU'+toStream(world.squares.getUpdate())+b';') #send a board update to member
   return 0
 
