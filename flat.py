@@ -100,7 +100,7 @@ def terpBlock(block):
 
     
 
-world = Board((64,64),name="client-world")
+world = Board((16,16),name="client-world")
 #worldBoardHandler = BoardHandler(world)
 #worldDataHandler = DataHandler(world.squares)
 

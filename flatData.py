@@ -31,7 +31,8 @@ class DataHandler:
       except KeyError:
         print(self.name + ": " + str(key) + " does not exist")
       except IndexError:
-        print(self.name + ": " + str(key) + " is out of bounds, try the range (0," + str(len(self.source)) + ")")
+        #print(self.name + ": " + str(key) + " is out of bounds, try the range (0," + str(len(self.source)) + ")")
+        pass
     
   def __setitem__(self,key,value):
     startType = type(self.source[key])
@@ -69,7 +70,15 @@ class DataHandler:
     
   def putUpdate(self,update):
     for key in update:
-      startType = type(self.source[key])
+      try:
+        startType = type(self.source[key])
+      except KeyError:
+        print(self.name + ": putUpdate key [" + str(key) + "] doesn't exist in " + str(type(self.source)) + " source of length " + str(len(self.source)) + ", putting primative <- VERY BAD IF INCORRECT")
+        startType = None
+        self.source[key] = update[key]
+      except IndexError:
+        print(self.name + ": putUpdate index [" + str(key) + "] doesn't exist in " + str(type(self.source)) + " source of length " + str(len(self.source)) + ", stopping")
+        return
       if self.changes.__contains__(key): #don't hold onto any changes that are remotely overwritten
         self.changes.__delitem__(key)
       if not decodeUpdate(self.source[key],update[key]):

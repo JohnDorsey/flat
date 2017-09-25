@@ -3,8 +3,8 @@ from flatData import *
 
 class ByteHandler(DataHandler):
 
-  def __init__(self,source,name="unnIH"):
-    DataHandler.__init__(self,source,name=name)
+  def __init__(self,source,name="unnIH",parent=None):
+    DataHandler.__init__(self,source,name=name,parent=parent)
     
   def __str__(self):
     return "bh" + DataHandler.__str__(self)
@@ -24,7 +24,7 @@ class ByteHandler(DataHandler):
     startType = type(self.source)
     self.changes.clear()
     self.source.clear()
-    self.source = [int(refresh[i]) for i in range(len(self.source))]
+    self.source = [int(refresh[i]) for i in range(len(self.refresh))]
     if not startType==type(self.source):
       print(self.name + ": ByteHandler.putRefresh type mismatch of source: " + str(startType) + " -> " + str(type(self.source)))
     #for i in range(len(self.source)):

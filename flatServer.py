@@ -10,7 +10,7 @@ import random
 
 
 
-world = Board((64,64),name="server-world") #the server copy of the board
+world = Board((16,16),name="server-world") #the server copy of the board
 #boardHandler = BoardHandler(board) #translates instruction bytes and manipulates board
 #worldBoardHandler = BoardHandler(world,name="serverWBH")
 #worldDataHandler = DataHandler(world.squares,name="serverWDH")
