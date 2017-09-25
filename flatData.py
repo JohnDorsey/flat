@@ -32,21 +32,24 @@ class DataHandler:
         print(self.name + ": " + str(key) + " does not exist")
     
   def __setitem__(self,key,value):
+    startType = type(self.source[key])
     if not (self.has(key)): #any item modified must be made part of the source
       self.source[key] = value
       print(self.name + ": adding new item to source: " + str(key) + ":" + str(value))
     self.changes[key] = value #the emulated value, either original or changed, must be made equal to value
     if self.source[key] == self.changes[key]: #after adding the change, maybe remove it.
       self.changes.__delitem__(key)
+    if not startType == type(self.source[key]):
+      print(self.name + ": setitem type mismatch for [" + str(key) + "]: " + str(startType) + " -> " + str(type(self.source[key])))
     self.register()
       
   def __str__(self):
     stringSource = {}
     stringChanges = {}
     for key in self.gen:
-      stringSource[key] = str(self.source[key])
+      stringSource[key] = str(type(self.source[key])) + type(self.source[key]).__str__(self.source[key])
     for key in self.changes:
-      stringChanges[key] = str(self.changes[key])
+      stringChanges[key] = type(self.changes[key]).__str__(self.changes[key])
     return "{name:" + self.name + ",source:" + str(stringSource) + ",changes:" + str(stringChanges) + "}"
       
   def applyChanges(self):
@@ -64,10 +67,13 @@ class DataHandler:
     
   def putUpdate(self,update):
     for key in update:
+      startType = type(self.source[key])
       if self.changes.__contains__(key): #don't hold onto any changes that are remotely overwritten
         self.changes.__delitem__(key)
       if not decodeUpdate(self.source[key],update[key]):
         self.source[key] = update[key]
+      if not startType == type(self.source[key]):
+        print(self.name + ": putUpdate type mismatch for [" + str(key) + "]: " + str(startType) + " -> " + str(type(self.source[key])))
 
   def getRefresh(self):
     result = self.baseResult() #the refresh should be the same type as the content?????????????
@@ -77,8 +83,11 @@ class DataHandler:
     
   def putRefresh(self,refresh):
     for key in self.gen:
+      startType = type(self.source[key])
       if not decodeRefresh(key,refresh[key]):
         self.source[key] = refresh[key]
+      if not startType == type(self.source[key]):
+        print(self.name + ": putRefresh type mismatch for [" + str(key) + "]: " + str(startType) + " -> " + str(type(self.source[key])))
     self.changes.clear() #whatever you have been doing with your local data, you are wrong.
 
   def register(self,child=None):
@@ -102,18 +111,3 @@ class DataHandler:
       except AttributeError:
         fails += 1
     print(self.name + ": adopted " + str(tries-fails) + " of " + str(tries) + " children.")
-        
-
-
-  
-'''
-def toStream(object):
-  if type(object)==dict:
-    result = b'{'
-    for key in object:
-      result += str(object[key]).encode() + b':' + (str(object).encode() if not type(object)==bytes else object) + b','
-    result = result[:-1] + b'}'
-    return result.replace(b' ',b'')
-  else:
-    return str(object).replace(" ","").encode()
-'''

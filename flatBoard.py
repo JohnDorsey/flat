@@ -54,8 +54,8 @@ class Board:
       square = row[x]
       return self.colorOf(square)
     except KeyError as ke:
-      print("colorAt: key error using keys: " + str(x) + ", " + str(y) + " in the " + str(type(self.squares)))
-      print("squares is equal to: " + str(self.squares))
+      #print("colorAt: key error using keys: " + str(x) + ", " + str(y) + " in the " + str(type(self.squares)))
+      #print("squares is equal to: " + str(self.squares))
       return (255,0,0,255)
       
   def colorOf(self,id): #board colors

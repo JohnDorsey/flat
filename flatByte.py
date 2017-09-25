@@ -6,6 +6,9 @@ class ByteHandler(DataHandler):
   def __init__(self,source,name="unnIH"):
     DataHandler.__init__(self,source,name=name)
     
+  def __str__(self):
+    return "bh" + DataHandler.__str__(self)
+    
   def getRefresh(self):
     print(self.name + ": getting refresh (direct): "),
     #result = b''
@@ -32,10 +35,10 @@ class ByteHandler(DataHandler):
     
    
   def putUpdate(self,update): #debugging only
-    print(self.name + ": putUpdate is: " + str(update))
+    print(self.name + ": putUpdate is " + str(type(update)) + ": " + str(update))
     DataHandler.putUpdate(self,update)
     
   def getUpdate(self): #debugging only
     result = DataHandler.getUpdate(self)
-    print(self.name + ": getUpdate is: " + str(result))
+    print(self.name + ": getUpdate is " + str(type(result)) + ": " + str(result))
     return result
