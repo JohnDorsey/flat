@@ -54,7 +54,7 @@ def frame(t=0.0625):
       stop()
     if ev.type == pygame.KEYDOWN:
       Player.move(me,keyToDirection(ev.key))
-      s.send(b'PR'+toStream(me.getUpdate())+b';')
+      s.send(b'PU'+toStream(me.getUpdate())+b';')
   try:
     streamIn = s.recv(16384) #recieve data from server
   except socket.error:

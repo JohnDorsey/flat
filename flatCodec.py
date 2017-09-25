@@ -25,7 +25,8 @@ def decodeRefresh(object,input):
   try:
     type(object).putRefresh(object,input)
     return True
-  except AttributeError:
+  except AttributeError as ae:
+    print("codec: " + str(ae))
     return False
     
     

@@ -96,6 +96,7 @@ class DataHandler:
     for key in self.gen:
       startType = type(self.source[key])
       if not decodeRefresh(self.source[key],refresh[key]):
+        print(self.name + ": overwriting [" + str(key) + "]")
         self.source[key] = refresh[key]
       if not startType == type(self.source[key]):
         print(self.name + ": putRefresh type mismatch for [" + str(key) + "]: " + str(startType) + " -> " + str(type(self.source[key])))
