@@ -21,8 +21,12 @@ class ByteHandler(DataHandler):
   
   def putRefresh(self,refresh):
     print(self.name + ": putting refresh (direct)")
+    startType = type(self.source)
     self.changes.clear()
+    self.source.clear()
     self.source = [int(refresh[i]) for i in range(len(self.source))]
+    if not startType==type(self.source):
+      print(self.name + ": ByteHandler.putRefresh type mismatch of source: " + str(startType) + " -> " + str(type(self.source)))
     #for i in range(len(self.source)):
     #  self.source[i] = int(refresh[i])
     #self.source = [refresh[i] for i in range(len(self.source))]

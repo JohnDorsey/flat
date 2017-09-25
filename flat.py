@@ -47,7 +47,7 @@ def frame(t=0.0625):
   pygame.display.flip()
   #just for debugging:
   me["debugData"]["clientSays"] = random.randint(-100,-1)
-  print("world.squares is " + str(world.squares))
+  #print("world.squares is " + str(world.squares))
   for ev in pygame.event.get():
     if ev.type == pygame.QUIT:
       s.send(b'#goodbye;')

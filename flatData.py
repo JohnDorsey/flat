@@ -30,6 +30,8 @@ class DataHandler:
         return self.source[key]
       except KeyError:
         print(self.name + ": " + str(key) + " does not exist")
+      except IndexError:
+        print(self.name + ": " + str(key) + " is out of bounds, try the range (0," + str(len(self.source)) + ")")
     
   def __setitem__(self,key,value):
     startType = type(self.source[key])
@@ -84,7 +86,7 @@ class DataHandler:
   def putRefresh(self,refresh):
     for key in self.gen:
       startType = type(self.source[key])
-      if not decodeRefresh(key,refresh[key]):
+      if not decodeRefresh(self.source[key],refresh[key]):
         self.source[key] = refresh[key]
       if not startType == type(self.source[key]):
         print(self.name + ": putRefresh type mismatch for [" + str(key) + "]: " + str(startType) + " -> " + str(type(self.source[key])))
