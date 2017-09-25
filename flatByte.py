@@ -7,7 +7,7 @@ class ByteHandler(DataHandler):
     DataHandler.__init__(self,source,name=name)
     
   def getRefresh(self):
-    print("getting refresh (direct) for " + self.name + ": "),
+    print(self.name + ": getting refresh (direct): "),
     #result = b''
     result = ""
     for item in self.source:
@@ -17,7 +17,7 @@ class ByteHandler(DataHandler):
     return result
   
   def putRefresh(self,refresh):
-    print("putting refresh (direct) for " + self.name)
+    print(self.name + ": putting refresh (direct)")
     self.changes.clear()
     self.source = [int(refresh[i]) for i in range(len(self.source))]
     #for i in range(len(self.source)):
@@ -32,10 +32,10 @@ class ByteHandler(DataHandler):
     
    
   def putUpdate(self,update): #debugging only
-    print("the ByteHandler putUpdate is: " + str(update))
+    print(self.name + ": putUpdate is: " + str(update))
     DataHandler.putUpdate(self,update)
     
   def getUpdate(self): #debugging only
     result = DataHandler.getUpdate(self)
-    print("the ByteHandler getUpdate is: " + str(result))
+    print(self.name + ": getUpdate is: " + str(result))
     return result
