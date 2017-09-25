@@ -6,13 +6,13 @@ def encodeUpdate(object): #these methods allow recursion where __str__ would bre
   try:
     return object.getUpdate()
   except AttributeError:
-    return str(object).encode()
+    return object
     
 def encodeRefresh(object):
   try:
     return type(object).getRefresh(object)
   except AttributeError:
-    return str(object).encode()
+    return object
 
 def decodeUpdate(object,input):
   try:
