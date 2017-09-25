@@ -129,7 +129,7 @@ while(True):
     s.listen(5)
     c, address = s.accept()
     print("creating entry for " + str(address))
-    member = [c,address,createPlayer(name="severMemberDH")]
+    member = [c,address,createPlayer(name="serverMemberDH")]
     print("connection established with " + str(address))
     member[0].send(("#connected to " + hostName + ":" + str(port)).encode()+b';') #greet
     _thread.start_new_thread(clientThread,(member,))

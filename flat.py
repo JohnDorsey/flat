@@ -104,8 +104,7 @@ world = Board((16,16),name="client-world")
 #worldBoardHandler = BoardHandler(world)
 #worldDataHandler = DataHandler(world.squares)
 
-me = createPlayer()
-me.name = "clientPlayerDH"
+me = createPlayer(name="clientPlayerDH")
 
 
 #players = []
