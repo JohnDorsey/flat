@@ -43,8 +43,6 @@ def stop():
 
 
 def frame(t=0.0625):
-  time.sleep(t)
-  pygame.display.flip()
   #just for debugging:
   me["debugData"]["clientSays"] = random.randint(-100,-1)
   #print("world.squares is " + str(world.squares))
@@ -60,6 +58,8 @@ def frame(t=0.0625):
   except socket.error:
     return
   terpStream(streamIn)
+  pygame.display.flip()
+  time.sleep(t)
       
 
 def keyToDirection(key): #keycode -> axis touple
