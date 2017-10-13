@@ -23,16 +23,21 @@ class DataHandler:
     #self.adopt()
     
   def __getitem__(self,key):
+    result = None
     try:
-      return self.changes[key]
+      result = self.changes[key]
     except KeyError:
       try:
-        return self.source[key]
+        result = self.source[key]
+        if hasattr(result, "getUpdate"):
+          self.changes[key] = result
       except KeyError:
         print(self.name + ": " + str(key) + " does not exist")
       except IndexError:
-        #print(self.name + ": " + str(key) + " is out of bounds, try the range (0," + str(len(self.source)) + ")")
+        print(self.name + ": " + str(key) + " is out of bounds, try the range (0," + str(len(self.source)) + ")")
         pass
+    return result
+        
     
   def __setitem__(self,key,value):
     startType = type(self.source[key])
