@@ -16,7 +16,7 @@ class DataHandler:
     self.source, self.name = source, name
     self.changes = {}
     self.gen = range(0,len(self.source)) if type(self.source)==list else iter(self.source)
-    self.baseResult = lambda: {} if type(self.source)==dict else list(0 for i in range(len(source)))
+    self.baseResult = lambda: {} if type(self.source)==dict else list(0 for i in range(len(source))) if type(self.source)==list else None
     self.has = lambda check: self.source.__contains__(check) if type(self.source)==dict else check < len(self.source)
     self.parent = parent
     self.mykey = "mykey"

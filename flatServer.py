@@ -53,7 +53,7 @@ def clientThread(member): #this runs and handlers a player connection until disc
       print(str(member[1]) +": tick="+str(clientTick)+": connection reset, quitting thread")
       return
     except ConnectionAbortedError:
-      print(str(member[1]) +": tick="str(clientTick)+": connection aborted, quitting thread")
+      print(str(member[1]) +": tick="+str(clientTick)+": connection aborted, quitting thread")
       return
       
   
