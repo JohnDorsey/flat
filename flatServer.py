@@ -96,13 +96,12 @@ def interact(member): #exchange data with specified player
       print("PU - will put " + block.decode())
       ph.putUpdate(toData(block[2:])) #cut out the b'PU'. combine these selectors soon
       world.add((ph["pos"][0],ph["pos"][1]),1)
-      ######NEEDS TO REGISTER CHANGE WITH THE WORLD DATA HANDLER
       pass
     elif len(block) >= 1:
       print("UNKNOWN - " + block.decode())
   if len(updateStream) > 0:
     c.send(b'DU'+updateStream+b';') #send this tick's data update to member
-  #world.preset("randomize")
+    pass
   c.send(b'PU'+toStream(ph.getUpdate())+b';')
   c.send(b'BU'+toStream(world.squares.getUpdate())+b';') #send a board update to member
   return 0
