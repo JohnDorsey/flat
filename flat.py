@@ -15,7 +15,6 @@ print("initializing display...")
 screen = pygame.display.set_mode((512,512))
 
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM) #create socket
-#hostName = socket.gethostname() #get hostname for creating connection, assuming it is on this host
 hostName = socket.gethostname()
 port = 25564
 
@@ -86,12 +85,15 @@ def terpBlock(block):
   elif block.startswith(b'PR'): #player refresh
     print("PR - will put " + block[2:].decode())
     me.putUpdate(toData(block[2:])) #give bytes to handler
-  elif block.startswith(b'DU'): #data update
-    print("DU - will put " + block[2:].decode())
-    dataHandler.putUpdate(toData(block[2:])) #give bytes to handler
+  elif block.startswith(b'PU'):
+    print("PU - will put " + block[2:].decode())
+    me.putUpdate(toData(block[2:]))
   elif block.startswith(b'DR'):
     print("DR - will put " + block[2:].decode())
     dataHandler.putRefresh(toData(block[2:])) #give bytes to handler
+  elif block.startswith(b'DU'): #data update
+    print("DU - will put " + block[2:].decode())
+    dataHandler.putUpdate(toData(block[2:])) #give bytes to handler
   else:
     print("UNKNOWN (" + str(len(block)) + " bytes): " + block.decode())
   
