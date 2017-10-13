@@ -16,7 +16,7 @@ screen = pygame.display.set_mode((512,512))
 
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM) #create socket
 #hostName = socket.gethostname() #get hostname for creating connection, assuming it is on this host
-hostName = "192.168.56.1"
+hostName = socket.gethostname()
 port = 25564
 
 def connect():
