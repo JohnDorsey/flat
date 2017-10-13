@@ -34,23 +34,19 @@ Certain classes may extend the DataHandler class to add custom encoding formats 
 To accomplish this, a specialized class to handle uniform-length objects is created. It inherits most of its methods from the DataHandler, but overrides getRefresh and putRefresh with new definitions which use concatenated strings to represent the source in a refresh.
 
 To-do:
-* replace self-registration with something that works
-* Make DataHandler and then ByteHandler work, in a predictable and explainable manner.
-* Make children of DataHandlers register themselves in the changes pool when they change themselves.
 * Make game data sync correctly, and make client draw opponents.
-* Create some sort of type-monitoring overviewer to help with debugging.
 * Add my Dig debugger to the project, but enhance it to collapse near-duplicate outputs.
 * Make server send updates to client without blocking to wait for a response.
 * Separate the server into distinct game-responsible and network-responsible components.
 * Add an intelligent filter to remove unnecessary update/refresh info for each client.
 * Tile individual boards into a larger world.
 * Make clients search for servers on LAN.
-* Catch OS-thrown exceptions.
 * Remake this all in Javascript.
+* Remake the server in Java
 
 
-
-This project's development has been slowed by outside forces.
+I have accomplished my goal of creating nested data handlers, greatly improving the efficiency of server-client communication in a multiplayer game. Although I'm far from finished, I may move this project to the back burner.
+This project was written with easy game development in mind, but will still require a lot more refinement before it would allow a programmer to stay focused on their game - a lot of things can still go wrong, and a lot more things are just unintuitive.
 
 This project is accessible at github.com/JohnDorsey/flat
 Posts about the project can be found at john-dorsey.com
