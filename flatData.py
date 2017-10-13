@@ -20,7 +20,7 @@ class DataHandler:
     self.has = lambda check: self.source.__contains__(check) if type(self.source)==dict else check < len(self.source)
     self.parent = parent
     self.mykey = "mykey"
-    self.adopt()
+    #self.adopt()
     
   def __getitem__(self,key):
     try:
@@ -44,7 +44,7 @@ class DataHandler:
       self.changes.__delitem__(key)
     if not startType == type(self.source[key]):
       print(self.name + ": setitem type mismatch for [" + str(key) + "]: " + str(startType) + " -> " + str(type(self.source[key])))
-    self.register()
+    #self.register()
       
   def __str__(self):
     stringSource = {}
