@@ -38,8 +38,8 @@ def clientThread(member): #this runs and handlers a player connection until disc
   member[0].send(b'#you_have_joined;')
   introduce(member)
   member[0].send(b'#you_have_been_introduced')
-  print("waiting 5 seconds for member[0] to interpret introduction...")
-  time.sleep(5.0)
+  #print("waiting 5 seconds for member[0] to interpret introduction...")
+  #time.sleep(5.0)
   clientTick = 0
   while(True):
     clientTick += 1
@@ -71,11 +71,12 @@ def serverThread(interval):
 def interact(member): #exchange data with specified player
   c = member[0] #connection
   ph = member[2] #player handler
+  streamIn = b''
   try:
     streamIn = c.recv(16384) #record client requests
   except socket.error as se:
     print(str(member[1]) + ": " + str(se))
-    streamIn = b'#empty;'
+    streamIn += b'#empty;'
   blocks = streamIn.split(b';')
   for block in blocks:
     if len(block) > 0:
