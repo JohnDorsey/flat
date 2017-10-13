@@ -52,7 +52,7 @@ def clientThread(member): #this runs and handlers a player connection until disc
     except ConnectionResetError:
       print(str(member[1]) +": tick="+str(clientTick)+": connection reset, quitting thread")
       return
-    except ConnextionAbortedError:
+    except ConnectionAbortedError:
       print(str(member[1]) +": tick="str(clientTick)+": connection aborted, quitting thread")
       return
       
