@@ -9,7 +9,7 @@ def encodeUpdate(object): #these methods allow recursion where __str__ would bre
     return object
     
 def encodeRefresh(object):
-  if hasattr(object, "encodeRefresh"):
+  if hasattr(object, "getRefresh"):
     return type(object).getRefresh(object)
   else:
     return object

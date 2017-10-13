@@ -8,9 +8,13 @@ class ByteHandler(DataHandler):
     print(self.name + ": initialized. source is " + str(type(self.source)) + type(self.source).__str__(self.source))
     
   def __str__(self):
+    print("BH __STRING__ CALLED ON " + self.name)
     return "bh" + DataHandler.__str__(self)
     
   def getRefresh(self):
+    if type(self.source)==str: #this should not happen due to limitations imposed by DataHandler
+        print(self.name + ": getRefresh: MY SOURCE IS A STRING! returning this string")
+        return self.source
     print(self.name + ": getting refresh"),
     #result = b''
     result = ""
