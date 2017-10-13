@@ -3,30 +3,30 @@
     
     
 def encodeUpdate(object): #these methods allow recursion where __str__ would break it.
-  try:
+  if hasattr(object, "getUpdate"):
     return object.getUpdate()
-  except AttributeError:
+  else:
     return object
     
 def encodeRefresh(object):
-  try:
+  if hasattr(object, "encodeRefresh"):
     return type(object).getRefresh(object)
-  except AttributeError:
+  else:
     return object
 
 def decodeUpdate(object,input):
-  try:
+  if hasattr(object, "putUpdate"):
     object.putUpdate(input)
     return True
-  except AttributeError:
+  else:
     return False
     
 def decodeRefresh(object,input):
-  try:
+  if hasattr(object, "putRefresh"):
     type(object).putRefresh(object,input)
     return True
-  except AttributeError as ae:
-    print("codec: " + str(ae))
+  else:
+    print("codec: " + str(object) + " does not have a putRefresh method")
     return False
     
     
