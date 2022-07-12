@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+
+
 import socket
 import _thread
 from flatBoard import *

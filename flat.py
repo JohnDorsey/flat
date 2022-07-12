@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 
 import time
 import socket
@@ -16,7 +17,9 @@ screen = pygame.display.set_mode((512,512))
 
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM) #create socket
 hostName = socket.gethostname()
+# hostName = "127.0.0.1"
 port = 25564
+print(f"{hostName=}, {port=}.")
 
 def connect():
   s.connect((hostName,port)) #connect to server
